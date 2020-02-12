@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -21,13 +22,15 @@ public class App extends Application {
 		Rectangle rectangle = new Rectangle(200, 120);
 		Label label = new Label();
 		Slider slider = new Slider(0, 1, 0);
+		ProgressBar pb = new ProgressBar();
 		
 		label.textProperty().bind(slider.valueProperty().asString("%.2f"));
+		pb.progressProperty().bind(slider.valueProperty());
 		
 		VBox root = new VBox(5);
 		root.setPadding(new Insets(5));
 		root.setAlignment(Pos.CENTER);
-		root.getChildren().addAll(rectangle, label, slider);
+		root.getChildren().addAll(rectangle, label, slider, pb);
 		
 		primaryStage.setTitle("Gradiente");
 		primaryStage.setScene(new Scene(root, 320, 200));
@@ -37,11 +40,11 @@ public class App extends Application {
 			Color color = interpolate(Color.RED, Color.YELLOW, Color.GREEN, nv.doubleValue());
 			String web = color.toString().replace("0x", "#");
 			rectangle.setStyle("-fx-fill:" + web + ";");
+			Region r = (Region) pb.lookup(".bar");
+			r.setStyle("-fx-background-color:" + web + ";");
 		});
 		slider.setValue(1);
-	
-//		Region r = progressBar.lookup("bar");
-//		r.setStyle(value);
+		
 		
 	}
 	
